@@ -1,59 +1,33 @@
 package com.sentinel.lifeos.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-)
+// Generated from design tokens — DO NOT EDIT
+object TokenColors {
+    val GlassBackground = Color(0x14ffffff)
+    val GlassCardBackground = Color(0x1effffff)
+    val GlassBorder = Color(0x26ffffff)
+    val AccentPrimary = Color.parseColor("#6366f1")
+    val AccentSecondary = Color.parseColor("#8b5cf6")
+    val SurfaceBackground = Color.parseColor("#0f0f23")
+    val SurfaceCard = Color.parseColor("#1a1a2e")
+    val TextPrimary = Color.parseColor("#e2e8f0")
+    val TextSecondary = Color.parseColor("#94a3b8")
+}
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-)
+object TokenSpacing {
+    val Xs = 4.dp
+    val Sm = 8.dp
+    val Md = 16.dp
+    val Lg = 24.dp
+    val Xl = 32.dp
+}
 
-@Composable
-fun SentinelLifeOsTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
-    content: @Composable () -> Unit,
-) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
-
-    val view = LocalView.current
-    if (!view.isInEditMode) {
-        SideEffect {
-            val window = (view.context as Activity).window
-            window.statusBarColor = colorScheme.primary.toArgb()
-            WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = !darkTheme
-        }
-    }
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = Typography,
-        content = content,
-    )
+object TokenRadius {
+    val Sm = 8.dp
+    val Md = 12.dp
+    val Lg = 16.dp
+    val Xl = 24.dp
 }
