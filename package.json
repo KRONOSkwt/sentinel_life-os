@@ -1,0 +1,23 @@
+{
+  "name": "sentinel-life-os",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Modular Life OS — 6 independent modules with shared infrastructure",
+  "type": "module",
+  "scripts": {
+    "nx": "nx",
+    "start": "nx run-many -t serve",
+    "build": "nx run-many -t build",
+    "lint": "nx run-many -t lint",
+    "test": "nx run-many -t test"
+  },
+  "devDependencies": {
+    "@nx/workspace": "19.4.0",
+    "@nx/devkit": "19.4.0",
+    "nx": "19.4.0",
+    "typescript": "5.5.4"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
