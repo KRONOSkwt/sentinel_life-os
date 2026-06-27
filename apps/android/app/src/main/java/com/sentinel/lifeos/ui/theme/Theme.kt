@@ -4,17 +4,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-// Generated from design tokens — DO NOT EDIT
+// Generated from design tokens ï¿½ DO NOT EDIT
 object TokenColors {
     val GlassBackground = Color(0x14ffffff)
     val GlassCardBackground = Color(0x1effffff)
     val GlassBorder = Color(0x26ffffff)
-    val AccentPrimary = Color.parseColor("#6366f1")
-    val AccentSecondary = Color.parseColor("#8b5cf6")
-    val SurfaceBackground = Color.parseColor("#0f0f23")
-    val SurfaceCard = Color.parseColor("#1a1a2e")
-    val TextPrimary = Color.parseColor("#e2e8f0")
-    val TextSecondary = Color.parseColor("#94a3b8")
+    val AccentPrimary = Color(0xFF6366f1)
+    val AccentSecondary = Color(0xFF8b5cf6)
+    val SurfaceBackground = Color(0xFF0f0f23)
+    val SurfaceCard = Color(0xFF1a1a2e)
+    val TextPrimary = Color(0xFFe2e8f0)
+    val TextSecondary = Color(0xFF94a3b8)
 }
 
 object TokenSpacing {

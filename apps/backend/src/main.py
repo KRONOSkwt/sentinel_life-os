@@ -51,7 +51,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get("/health", tags=["health"])
-@limiter.exempt
+@general_limiter.exempt
 async def health_check():
     """Health check endpoint — returns 200 when the service is alive."""
     return {"status": "ok", "version": settings.app_version}
