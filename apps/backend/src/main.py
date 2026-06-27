@@ -10,6 +10,8 @@ from slowapi.util import get_remote_address
 
 from src.config import settings
 from src.core.database import Base, engine
+from src.middleware.rate_limit import auth_limiter, general_limiter
+from src.routers.auth import router as auth_router
 
 
 @asynccontextmanager
@@ -39,8 +41,7 @@ app.add_middleware(
 )
 
 # 2. Rate limiting
-limiter = Limiter(key_func=get_remote_address)
-app.state.limiter = limiter
+app.state.limiter = general_limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
@@ -54,3 +55,6 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 async def health_check():
     """Health check endpoint — returns 200 when the service is alive."""
     return {"status": "ok", "version": settings.app_version}
+
+
+app.include_router(auth_router)
