@@ -1,0 +1,39 @@
+# docker/docker-compose.yml
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../apps/backend
+      dockerfile: Dockerfile
+      target: development
+    container_name: sentinel-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../data:/app/data              # SQLite databases
+      - ../apps/backend/src:/app/src   # Hot reload in dev
+    env_file:
+      - ../.env
+    environment:
+      - DATABASE_URL=sqlite:///./data/sentinel_auth.db
+      - JWT_SECRET=${JWT_SECRET:-dev-secret-change-in-prod}
+      - CORS_ORIGINS=http://localhost:4200,https://sentinel-life-os.vercel.app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: sentinel-tunnel
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

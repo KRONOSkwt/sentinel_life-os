@@ -1,0 +1,39 @@
+# docker/docker-compose.prod.yml
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../apps/backend
+      dockerfile: Dockerfile
+      target: production
+    container_name: sentinel-backend-prod
+    ports:
+      - "8000:8000"
+    volumes:
+      - sentinel-data:/app/data
+    env_file:
+      - ../.env.production
+    environment:
+      - DATABASE_URL=sqlite:///./data/sentinel_auth.db
+      - CORS_ORIGINS=https://sentinel-life-os.vercel.app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: sentinel-tunnel-prod
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  sentinel-data:
