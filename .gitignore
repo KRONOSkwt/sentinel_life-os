@@ -60,6 +60,20 @@ nx-cloud.env
 
 # Docker
 docker/data/
+docker/volumes/
+
+# Python virtual environments
+.venv/
+venv/
+ENV/
+
+# Ruff
+.ruff_cache/
+
+# Generated files
+apps/web/src/styles/_tokens.css
+apps/web/src/styles/_glass.css
+apps/android/app/src/main/java/com/sentinel/lifeos/ui/theme/Theme.kt
 
 # Misc
 *.tgz
