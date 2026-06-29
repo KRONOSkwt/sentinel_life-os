@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.sentinel.lifeos.ui.deportes.DeportesScreen
 import com.sentinel.lifeos.ui.gimnasio.GimnasioScreen
 
 /** Route constants — mirrors Angular routes for consistency. */
@@ -28,9 +29,6 @@ object Routes {
 
 @Composable
 fun HomeScreen() = ModulePlaceholder("Home")
-
-@Composable
-fun DeportesScreen() = ModulePlaceholder("Deportes")
 
 @Composable
 fun LesionesScreen() = ModulePlaceholder("Lesiones")
