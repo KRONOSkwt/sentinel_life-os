@@ -52,7 +52,7 @@ class Activity(Base):
     module_id = Column(Integer, nullable=False)
     type = Column(String(50), nullable=False)
     value = Column(Float, nullable=False)
-    metadata = Column(Text, nullable=True)  # JSON string
+    extra_data = Column("metadata", Text, nullable=True)  # JSON string
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
 
     module = relationship("Module", back_populates="activities")

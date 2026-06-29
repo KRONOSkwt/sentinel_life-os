@@ -85,7 +85,7 @@ def create_activity(
         module_id=body.module_id,
         type=body.type,
         value=body.value,
-        metadata=body.metadata,
+        extra_data=body.extra_data,
     )
     db.add(activity)
     db.commit()

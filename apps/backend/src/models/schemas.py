@@ -90,7 +90,7 @@ class ActivityCreate(BaseModel):
     module_id: int
     type: str = Field(..., min_length=1, max_length=50)
     value: float = Field(ge=0)
-    metadata: Optional[dict] = None
+    extra_data: Optional[dict] = None
 
 
 class ActivityResponse(BaseModel):
@@ -100,7 +100,7 @@ class ActivityResponse(BaseModel):
     module_id: int
     type: str
     value: float
-    metadata: Optional[dict]
+    extra_data: Optional[dict]
     created_at: datetime
 
 

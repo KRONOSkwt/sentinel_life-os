@@ -6,7 +6,7 @@ class ActivityBase(BaseModel):
     module_id: int
     type: str = Field(..., min_length=1, max_length=50)
     value: float = Field(ge=0)
-    metadata: Optional[Dict[str, Any]] = None
+    extra_data: Optional[Dict[str, Any]] = None
 
 class ActivityCreate(ActivityBase):
     pass
