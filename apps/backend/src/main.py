@@ -12,6 +12,8 @@ from src.config import settings
 from src.core.database import Base, engine
 from src.middleware.rate_limit import auth_limiter, general_limiter
 from src.routers.auth import router as auth_router
+from src.routers.modules import router as modules_router
+from src.routers.activities import router as activities_router
 
 
 @asynccontextmanager
@@ -58,3 +60,5 @@ async def health_check():
 
 
 app.include_router(auth_router)
+app.include_router(modules_router)
+app.include_router(activities_router)
