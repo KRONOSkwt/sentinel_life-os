@@ -403,7 +403,7 @@ export class WorkoutSessionComponent implements OnInit {
         this.loading.set(false);
         // Set next set number
         if (session.sets.length > 0) {
-          this.newSet.set_number = Math.max(...session.sets.map(s => s.set_number)) + 1;
+          this.newSet.set_number = Math.max(...session.sets.map((s: SetResponse) => s.set_number)) + 1;
         }
       },
       error: () => {
@@ -438,7 +438,7 @@ export class WorkoutSessionComponent implements OnInit {
   }
 
   getPRCount(): number {
-    return this.session()?.sets.filter(s => s.is_pr).length || 0;
+    return this.session()?.sets.filter((s: SetResponse) => s.is_pr).length || 0;
   }
 
   formatDuration(seconds: number): string {

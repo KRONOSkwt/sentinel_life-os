@@ -17,7 +17,11 @@
     "target": "ES2022",
     "module": "ES2022",
     "lib": ["ES2022", "dom"],
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@sentinel/shared/*": ["../../libs/shared/*"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

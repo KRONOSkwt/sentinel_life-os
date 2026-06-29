@@ -13,7 +13,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@sentinel-life-os/shared/*": ["libs/shared/*"]
+      "@sentinel-life-os/shared/*": ["libs/shared/*"],
+      "@sentinel/shared/*": ["libs/shared/*"],
+      "@sentinel/*": ["libs/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

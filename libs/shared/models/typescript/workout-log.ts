@@ -53,3 +53,18 @@ export interface WeightChartResponse {
   exercise_name: string;
   data: WeightChartEntry[];
 }
+
+// ---------------------------------------------------------------------------
+// Heatmap
+// ---------------------------------------------------------------------------
+
+export interface HeatmapDay {
+  date: string;
+  intensity: number;
+  workout_count: number;
+}
+
+export interface HeatmapResponse {
+  year: number;
+  days: HeatmapDay[];
+}
