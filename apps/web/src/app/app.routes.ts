@@ -1,53 +1,74 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './core/auth/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
+
+  // Public route
   {
-    path: 'home',
+    path: 'login',
     loadComponent: () =>
-      import('./modules/home/home.component').then((m) => m.HomeComponent),
+      import('./modules/login/login.component').then((m) => m.LoginComponent),
   },
+
+  // Protected routes — wrapped in BentoLayoutComponent
   {
-    path: 'gimnasio',
+    path: '',
+    canActivate: [AuthGuard],
     loadComponent: () =>
-      import('./modules/gimnasio/gimnasio.component').then(
-        (m) => m.GimnasioComponent
+      import('./layouts/bento-layout/bento-layout.component').then(
+        (m) => m.BentoLayoutComponent
       ),
+    children: [
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('./modules/home/home.component').then((m) => m.HomeComponent),
+      },
+      {
+        path: 'gimnasio',
+        loadComponent: () =>
+          import('./modules/gimnasio/gimnasio.component').then(
+            (m) => m.GimnasioComponent
+          ),
+      },
+      {
+        path: 'deportes',
+        loadComponent: () =>
+          import('./modules/deportes/deportes.component').then(
+            (m) => m.DeportesComponent
+          ),
+      },
+      {
+        path: 'lesiones',
+        loadComponent: () =>
+          import('./modules/lesiones/lesiones.component').then(
+            (m) => m.LesionesComponent
+          ),
+      },
+      {
+        path: 'pastoral',
+        loadComponent: () =>
+          import('./modules/pastoral/pastoral.component').then(
+            (m) => m.PastoralComponent
+          ),
+      },
+      {
+        path: 'filosofia',
+        loadComponent: () =>
+          import('./modules/filosofia/filosofia.component').then(
+            (m) => m.FilosofiaComponent
+          ),
+      },
+      {
+        path: 'ciberseguridad',
+        loadComponent: () =>
+          import('./modules/ciberseguridad/ciberseguridad.component').then(
+            (m) => m.CiberseguridadComponent
+          ),
+      },
+    ],
   },
-  {
-    path: 'deportes',
-    loadComponent: () =>
-      import('./modules/deportes/deportes.component').then(
-        (m) => m.DeportesComponent
-      ),
-  },
-  {
-    path: 'lesiones',
-    loadComponent: () =>
-      import('./modules/lesiones/lesiones.component').then(
-        (m) => m.LesionesComponent
-      ),
-  },
-  {
-    path: 'pastoral',
-    loadComponent: () =>
-      import('./modules/pastoral/pastoral.component').then(
-        (m) => m.PastoralComponent
-      ),
-  },
-  {
-    path: 'filosofia',
-    loadComponent: () =>
-      import('./modules/filosofia/filosofia.component').then(
-        (m) => m.FilosofiaComponent
-      ),
-  },
-  {
-    path: 'ciberseguridad',
-    loadComponent: () =>
-      import('./modules/ciberseguridad/ciberseguridad.component').then(
-        (m) => m.CiberseguridadComponent
-      ),
-  },
+
   { path: '**', redirectTo: '/home' },
 ];
