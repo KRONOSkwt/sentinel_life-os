@@ -1,0 +1,73 @@
+package com.sentinel.lifeos.ui.gimnasio.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import com.sentinel.lifeos.ui.theme.TokenColors
+
+/**
+ * A single row in the workout session set log.
+ * Displays set number, weight, reps, RPE, and PR status.
+ */
+@Composable
+fun WorkoutSetRow(
+    setNumber: Int,
+    weight: Double,
+    reps: Int,
+    rpe: Double? = null,
+    isPr: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = TokenColors.GlassCardBackground,
+        ),
+        shape = MaterialTheme.shapes.small,
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = "Set $setNumber",
+                style = MaterialTheme.typography.bodyMedium,
+                color = TokenColors.TextSecondary,
+            )
+            Text(
+                text = "${weight.toInt()} kg x $reps",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium,
+                color = TokenColors.TextPrimary,
+            )
+            if (rpe != null) {
+                Text(
+                    text = "RPE $rpe",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TokenColors.TextSecondary,
+                )
+            }
+            if (isPr) {
+                Text(
+                    text = "PR!",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold,
+                    color = TokenColors.AccentPrimary,
+                )
+            }
+        }
+    }
+}
