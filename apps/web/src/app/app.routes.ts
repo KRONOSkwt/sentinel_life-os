@@ -32,10 +32,8 @@ export const routes: Routes = [
       },
       {
         path: 'deportes',
-        loadComponent: () =>
-          import('./modules/deportes/deportes.component').then(
-            (m) => m.DeportesComponent
-          ),
+        loadChildren: () =>
+          import('./modules/deportes/deportes.routes').then((m) => m.routes),
       },
       {
         path: 'lesiones',
