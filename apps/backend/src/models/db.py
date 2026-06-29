@@ -39,7 +39,7 @@ class Module(Base):
     description = Column(Text, nullable=False)
     enabled = Column(Boolean, default=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
-    owner_id = Column(Integer, nullable=False)  # Foreign key to users
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     owner = relationship("User", back_populates="modules")
     activities = relationship("Activity", back_populates="module", cascade="all, delete-orphan")
@@ -49,7 +49,7 @@ class Activity(Base):
     __tablename__ = "activities"
 
     id = Column(Integer, primary_key=True, index=True)
-    module_id = Column(Integer, nullable=False)
+    module_id = Column(Integer, ForeignKey("modules.id"), nullable=False)
     type = Column(String(50), nullable=False)
     value = Column(Float, nullable=False)
     extra_data = Column("metadata", Text, nullable=True)  # JSON string

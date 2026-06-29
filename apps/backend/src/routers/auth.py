@@ -1,6 +1,6 @@
 """Authentication routes: register, login, refresh, me."""
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 
 from src.core.database import get_db
@@ -32,7 +32,7 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 @auth_limiter.limit("10/minute")
-def register(body: UserCreate, db: Session = Depends(get_db)):
+def register(request: Request, body: UserCreate, db: Session = Depends(get_db)):
     # Validate password strength
     errors = validate_password_strength(body.password)
     if errors:
@@ -65,7 +65,7 @@ def register(body: UserCreate, db: Session = Depends(get_db)):
 
 @router.post("/login", response_model=TokenResponse)
 @auth_limiter.limit("10/minute")
-def login(body: UserLogin, db: Session = Depends(get_db)):
+def login(request: Request, body: UserLogin, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == body.email).first()
     if not user or not verify_password(body.password, user.password_hash):
         raise HTTPException(
@@ -86,7 +86,7 @@ def login(body: UserLogin, db: Session = Depends(get_db)):
 
 @router.post("/refresh", response_model=TokenResponse)
 @auth_limiter.limit("10/minute")
-def refresh(body: TokenRefresh, db: Session = Depends(get_db)):
+def refresh(request: Request, body: TokenRefresh, db: Session = Depends(get_db)):
     try:
         payload = decode_token(body.refresh_token)
     except Exception:

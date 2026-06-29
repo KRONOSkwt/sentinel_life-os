@@ -75,6 +75,15 @@ apps/web/src/styles/_tokens.css
 apps/web/src/styles/_glass.css
 apps/android/app/src/main/java/com/sentinel/lifeos/ui/theme/Theme.kt
 
+# Angular
+apps/web/.angular/
+
+# Backend data (SQLite)
+apps/backend/data/
+
+# SDD artifacts
+sdd/
+
 # Misc
 *.tgz
 coverage/
