@@ -195,3 +195,107 @@ class UserAchievement(Base):
     )
 
     user = relationship("User")
+
+
+# ---------------------------------------------------------------------------
+# Deportes Module
+# ---------------------------------------------------------------------------
+
+
+class Sport(Base):
+    """Sport catalog — seed data + user-created custom sports."""
+
+    __tablename__ = "sports"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(150), nullable=False)
+    icon = Column(String(50), nullable=True)
+    is_custom = Column(Boolean, default=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = relationship("User")
+    activities = relationship("SportActivity", back_populates="sport")
+    race_events = relationship("RaceEvent", back_populates="sport")
+
+
+class SportActivity(Base):
+    """Individual sport activity log — linked to user and sport."""
+
+    __tablename__ = "sport_activities"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    sport_id = Column(Integer, ForeignKey("sports.id"), nullable=False)
+    date = Column(DateTime, nullable=False)
+    duration_seconds = Column(Integer, nullable=False)
+    distance_km = Column(Float, nullable=True)
+    calories = Column(Integer, nullable=True)
+    heart_rate_avg = Column(Integer, nullable=True)
+    extra_data = Column("metadata", Text, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = relationship("User")
+    sport = relationship("Sport", back_populates="activities")
+
+
+class TrainingPlan(Base):
+    """Training plan — multi-week plan with session targets."""
+
+    __tablename__ = "training_plans"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    name = Column(String(150), nullable=False)
+    description = Column(Text, nullable=True)
+    start_date = Column(DateTime, nullable=False)
+    end_date = Column(DateTime, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(
+        DateTime,
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
+    )
+
+    user = relationship("User")
+    weeks = relationship(
+        "TrainingPlanWeek", back_populates="plan", cascade="all, delete-orphan"
+    )
+
+
+class TrainingPlanWeek(Base):
+    """Weekly target within a training plan."""
+
+    __tablename__ = "training_plan_weeks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    plan_id = Column(
+        Integer, ForeignKey("training_plans.id", ondelete="CASCADE"), nullable=False
+    )
+    week_number = Column(Integer, nullable=False)
+    target_sessions = Column(Integer, nullable=False, default=3)
+    completed_sessions = Column(Integer, nullable=False, default=0)
+    notes = Column(Text, nullable=True)
+
+    plan = relationship("TrainingPlan", back_populates="weeks")
+
+
+class RaceEvent(Base):
+    """Race event — upcoming or past race."""
+
+    __tablename__ = "race_events"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    name = Column(String(200), nullable=False)
+    sport_id = Column(Integer, ForeignKey("sports.id"), nullable=False)
+    event_date = Column(DateTime, nullable=False)
+    distance_km = Column(Float, nullable=True)
+    location = Column(String(300), nullable=True)
+    target_time_seconds = Column(Integer, nullable=True)
+    notes = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = relationship("User")
+    sport = relationship("Sport", back_populates="race_events")

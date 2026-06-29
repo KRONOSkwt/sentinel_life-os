@@ -339,3 +339,219 @@ class HeatmapResponse(BaseModel):
 
     year: int
     days: list[HeatmapDay]
+
+
+# ---------------------------------------------------------------------------
+# Deportes — Sport
+# ---------------------------------------------------------------------------
+
+
+class SportCreate(BaseModel):
+    """Request body for creating a custom sport."""
+
+    name: str = Field(..., min_length=1, max_length=150)
+    icon: Optional[str] = Field(None, max_length=50)
+
+
+class SportResponse(BaseModel):
+    """Public sport representation."""
+
+    id: int
+    name: str
+    icon: Optional[str]
+    is_custom: bool
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ---------------------------------------------------------------------------
+# Deportes — SportActivity
+# ---------------------------------------------------------------------------
+
+
+class SportActivityCreate(BaseModel):
+    """Request body for logging a sport activity."""
+
+    sport_id: int
+    date: datetime
+    duration_seconds: int = Field(..., gt=0)
+    distance_km: Optional[float] = Field(None, ge=0)
+    calories: Optional[int] = Field(None, ge=0)
+    heart_rate_avg: Optional[int] = Field(None, ge=30, le=250)
+    extra_data: Optional[dict] = None
+    notes: Optional[str] = None
+
+
+class SportActivityUpdate(BaseModel):
+    """Request body for updating a sport activity (all optional)."""
+
+    date: Optional[datetime] = None
+    duration_seconds: Optional[int] = Field(None, gt=0)
+    distance_km: Optional[float] = Field(None, ge=0)
+    calories: Optional[int] = Field(None, ge=0)
+    heart_rate_avg: Optional[int] = Field(None, ge=30, le=250)
+    extra_data: Optional[dict] = None
+    notes: Optional[str] = None
+
+
+class SportActivityResponse(BaseModel):
+    """Public sport activity representation."""
+
+    id: int
+    user_id: int
+    sport_id: int
+    date: datetime
+    duration_seconds: int
+    distance_km: Optional[float]
+    calories: Optional[int]
+    heart_rate_avg: Optional[int]
+    extra_data: Optional[dict]
+    notes: Optional[str]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# ---------------------------------------------------------------------------
+# Deportes — Stats & PRs
+# ---------------------------------------------------------------------------
+
+
+class SportStatsResponse(BaseModel):
+    """Aggregated statistics for a sport."""
+
+    sport_id: int
+    sport_name: str
+    total_activities: int
+    total_time_seconds: int
+    total_distance_km: Optional[float]
+    average_duration_seconds: Optional[float]
+
+
+class PersonalRecordResponse(BaseModel):
+    """Personal record for a sport."""
+
+    sport_id: int
+    best_time_seconds: Optional[int]
+    best_distance_km: Optional[float]
+    best_pace_seconds_per_km: Optional[int]
+    best_time_date: Optional[datetime]
+    best_distance_date: Optional[datetime]
+
+
+# ---------------------------------------------------------------------------
+# Deportes — Training Plan
+# ---------------------------------------------------------------------------
+
+
+class TrainingPlanWeekUpdate(BaseModel):
+    """Update for a single week in a plan."""
+
+    week_number: int
+    target_sessions: int = Field(..., ge=1)
+    completed_sessions: int = Field(0, ge=0)
+    notes: Optional[str] = None
+
+
+class TrainingPlanCreate(BaseModel):
+    """Request body for creating a training plan."""
+
+    name: str = Field(..., min_length=1, max_length=150)
+    description: Optional[str] = None
+    start_date: datetime
+    end_date: datetime
+    weeks: Optional[list[TrainingPlanWeekUpdate]] = None
+
+
+class TrainingPlanUpdate(BaseModel):
+    """Request body for updating a training plan (all optional)."""
+
+    name: Optional[str] = Field(None, min_length=1, max_length=150)
+    description: Optional[str] = None
+    start_date: Optional[datetime] = None
+    end_date: Optional[datetime] = None
+    weeks: Optional[list[TrainingPlanWeekUpdate]] = None
+
+
+class TrainingPlanWeekResponse(BaseModel):
+    """Single week in a training plan."""
+
+    id: int
+    week_number: int
+    target_sessions: int
+    completed_sessions: int
+    notes: Optional[str]
+
+    class Config:
+        from_attributes = True
+
+
+class TrainingPlanResponse(BaseModel):
+    """Public training plan representation (list view — no weeks)."""
+
+    id: int
+    name: str
+    description: Optional[str]
+    start_date: datetime
+    end_date: datetime
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class TrainingPlanDetailResponse(TrainingPlanResponse):
+    """Training plan detail — includes weeks."""
+
+    weeks: list[TrainingPlanWeekResponse] = []
+
+
+# ---------------------------------------------------------------------------
+# Deportes — Race Event
+# ---------------------------------------------------------------------------
+
+
+class RaceEventCreate(BaseModel):
+    """Request body for creating a race event."""
+
+    name: str = Field(..., min_length=1, max_length=200)
+    sport_id: int
+    event_date: datetime
+    distance_km: Optional[float] = Field(None, ge=0)
+    location: Optional[str] = Field(None, max_length=300)
+    target_time_seconds: Optional[int] = Field(None, ge=0)
+    notes: Optional[str] = None
+
+
+class RaceEventUpdate(BaseModel):
+    """Request body for updating a race event (all optional)."""
+
+    name: Optional[str] = Field(None, min_length=1, max_length=200)
+    sport_id: Optional[int] = None
+    event_date: Optional[datetime] = None
+    distance_km: Optional[float] = Field(None, ge=0)
+    location: Optional[str] = Field(None, max_length=300)
+    target_time_seconds: Optional[int] = Field(None, ge=0)
+    notes: Optional[str] = None
+
+
+class RaceEventResponse(BaseModel):
+    """Public race event representation."""
+
+    id: int
+    user_id: int
+    name: str
+    sport_id: int
+    event_date: datetime
+    distance_km: Optional[float]
+    location: Optional[str]
+    target_time_seconds: Optional[int]
+    notes: Optional[str]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True

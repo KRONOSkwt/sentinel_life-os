@@ -1,4 +1,4 @@
-"""Shared test fixtures for gimnasio backend tests.
+"""Shared test fixtures for backend tests.
 
 Uses in-memory SQLite for isolation and httpx TestClient for integration tests.
 """
@@ -10,6 +10,7 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy.pool import StaticPool
 
 # Ensure src is importable
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -27,7 +28,18 @@ from src.models.db import Exercise, User
 @pytest.fixture(scope="function")
 def db_session():
     """Create an in-memory SQLite session for each test."""
-    engine = create_engine("sqlite:///:memory:")
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+
+    @event.listens_for(engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
     Base.metadata.create_all(bind=engine)
     TestSession = sessionmaker(bind=engine)
 
