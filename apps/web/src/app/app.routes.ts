@@ -27,10 +27,8 @@ export const routes: Routes = [
       },
       {
         path: 'gimnasio',
-        loadComponent: () =>
-          import('./modules/gimnasio/gimnasio.component').then(
-            (m) => m.GimnasioComponent
-          ),
+        loadChildren: () =>
+          import('./modules/gimnasio/gimnasio.routes').then((m) => m.routes),
       },
       {
         path: 'deportes',
