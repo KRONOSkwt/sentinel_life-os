@@ -6,9 +6,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.sentinel.lifeos.navigation.AppNavGraph
 import com.sentinel.lifeos.ui.theme.SentinelLifeOsTheme
 
 /**
@@ -23,17 +24,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Sentinel Life OS")
+                    val navController = rememberNavController()
+                    AppNavGraph(navController = navController)
                 }
             }
         }
     }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Welcome to $name",
-        modifier = modifier
-    )
 }

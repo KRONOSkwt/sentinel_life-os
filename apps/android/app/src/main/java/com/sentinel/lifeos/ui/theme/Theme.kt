@@ -1,10 +1,12 @@
 package com.sentinel.lifeos.ui.theme
 
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 
-// Generated from design tokens � DO NOT EDIT
+// Generated from design tokens — DO NOT EDIT
 object TokenColors {
     val GlassBackground = Color(0x14ffffff)
     val GlassCardBackground = Color(0x1effffff)
@@ -30,4 +32,28 @@ object TokenRadius {
     val Md = 12.dp
     val Lg = 16.dp
     val Xl = 24.dp
+}
+
+// ---------------------------------------------------------------------------
+// Material3 dark color scheme wired to design tokens
+// ---------------------------------------------------------------------------
+
+private val SentinelColorScheme = darkColorScheme(
+    primary = TokenColors.AccentPrimary,
+    secondary = TokenColors.AccentSecondary,
+    background = TokenColors.SurfaceBackground,
+    surface = TokenColors.SurfaceCard,
+    onPrimary = Color.White,
+    onSecondary = Color.White,
+    onBackground = TokenColors.TextPrimary,
+    onSurface = TokenColors.TextPrimary,
+)
+
+@Composable
+fun SentinelLifeOsTheme(content: @Composable () -> Unit) {
+    MaterialTheme(
+        colorScheme = SentinelColorScheme,
+        typography = Typography,
+        content = content,
+    )
 }
